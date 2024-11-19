@@ -13,15 +13,19 @@ from .forms import *
 
 def showIndex(request):
     listproducts5 = Producto.objects.order_by('-fecha_actualizacion')[:5]
-    listproductslider = Producto.objects.filter(supermercado__nombre='Lider').order_by('precio')[:10]
-    listproductsjumbo = Producto.objects.filter(supermercado__nombre='Jumbo').order_by('precio')[:10]
-    listproductssanta_isabel = Producto.objects.filter(supermercado__nombre='Santa Isabel').order_by('precio')[:10]
+    productslider = Producto.objects.filter(supermercado__nombre='Lider')
+    productsjumbo = Producto.objects.filter(supermercado__nombre='Jumbo')
+    productssanta_isabel = Producto.objects.filter(supermercado__nombre='Santa Isabel')
     
+    lider_productos = [productslider[i:i + 5] for i in range(0, len(productslider), 5)]
+    jumbo_productos = [productsjumbo[i:i + 5] for i in range(0, len(productsjumbo), 5)]
+    santa_isabel_productos = [productssanta_isabel[i:i + 5] for i in range(0, len(productssanta_isabel), 5)]
+
     datos = {
         'products5': listproducts5,
-        'productslider': listproductslider,
-        'productsjumbo': listproductsjumbo,
-        'productssanta_isabel': listproductssanta_isabel,
+        'lider_productos': lider_productos,
+        'jumbo_productos': jumbo_productos,
+        'santa_isabel_productos': santa_isabel_productos,
         'mostrar_filtros': True
     }
     

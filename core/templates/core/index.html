@@ -5,6 +5,7 @@
 
 {% block principal %}
 
+<!-- Carrusel Principal -->
 <section class="py-3 px-4 bg-section">
     <div class="container-fluid">
         <div class="row">
@@ -40,125 +41,172 @@
         </div>
     </div>
 </section>
+<!---->
 
+<!-- Carruseles por Supermercado -->
 <section class="py-5 bg-section">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="bootstrap-tabs product-tabs">
+                <div class="product-tabs">
+                    <!-- Carrusel para Lider -->
                     <div class="tabs-header d-flex justify-content-between border-bottom my-5">
                         <h3>Lider</h3>
                     </div>
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
-                            <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-                                {% for product in productslider %}
-                                <div class="col">
-                                    <div class="product-item">
-                                        {% if user.is_authenticated %}
-                                            <a href="#" class="btn-wishlist toggle-favorite" data-product-id="{{ product.id }}">
-                                                <svg width="24" height="24">
-                                                    <use xlink:href="#heart"></use>
-                                                </svg>
-                                            </a>
-                                        {% endif %}
-                                        <figure>
-                                            <a href="{% url 'detail' product.id %}" title="{{ product.nombre }}">  
-                                                <img src="{{ product.imagen_url.url }}" class="tab-image" alt="{{ product.nombre }}">
-                                            </a>
-                                        </figure>
-                                        <h3>{{ product.nombre }}</h3>  
-                                        <h5>{{ product.marca }}</h5>
-                                        <span class="rating"><svg width="24" height="24" class="text-primary">
-                                                <use xlink:href="#star-solid"></use>
-                                            </svg> 4.5</span>
-                                        <span class="price">${{ product.precio }}</span>
-                                        <div class="text-end mt-2">
-                                            <img src="{% static 'core/images/' %}{{ product.supermercado.nombre }}-logo.png" class="brand-logo" alt="{{ product.supermercado.nombre }} Logo">
-                                        </div>
+                    <div id="carousel-lider" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for products in lider_productos %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                                        {% for product in products %}
+                                            <div class="col">
+                                                <div class="product-item">
+                                                    {% if user.is_authenticated %}
+                                                        <a href="#" class="btn-wishlist toggle-favorite" data-product-id="{{ product.id }}">
+                                                            <svg width="24" height="24">
+                                                                <use xlink:href="#heart"></use>
+                                                            </svg>
+                                                        </a>
+                                                    {% endif %}
+                                                    <figure>
+                                                        <a href="{% url 'detail' product.id %}" title="{{ product.nombre }}">  
+                                                            <img src="{{ product.imagen_url.url }}" class="tab-image" alt="{{ product.nombre }}">
+                                                        </a>
+                                                    </figure>
+                                                    <h3>{{ product.nombre }}</h3>  
+                                                    <h5>{{ product.marca }}</h5>
+                                                    <span class="rating"><svg width="24" height="24" class="text-primary">
+                                                            <use xlink:href="#star-solid"></use>
+                                                        </svg> 4.5</span>
+                                                    <span class="price">${{ product.precio }}</span>
+                                                    <div class="text-end mt-2">
+                                                        <img src="{% static 'core/images/' %}{{ product.supermercado.nombre }}-logo.png" class="brand-logo" alt="{{ product.supermercado.nombre }} Logo">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
-                                {% endfor %}
-                            </div>
+                            {% endfor %}
                         </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-lider" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-lider" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
+                    <!---->
+                
+                    <!-- Carrusel para Jumbo -->
                     <div class="tabs-header d-flex justify-content-between border-bottom my-5">
                         <h3>Jumbo</h3>
                     </div>
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
-                            <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-                                {% for product in productsjumbo %}
-                                <div class="col">
-                                    <div class="product-item">
-                                        {% if user.is_authenticated %}
-                                            <a href="#" class="btn-wishlist toggle-favorite" data-product-id="{{ product.id }}">
-                                                <svg width="24" height="24">
-                                                    <use xlink:href="#heart"></use>
-                                                </svg>
-                                            </a>
-                                        {% endif %}
-                                        <figure>
-                                            <a href="{% url 'detail' product.id %}" title="{{ product.nombre }}">  
-                                                <img src="{{ product.imagen_url.url }}" class="tab-image" alt="{{ product.nombre }}">
-                                            </a>
-                                        </figure>
-                                        <h3>{{ product.nombre }}</h3>  
-                                        <h5>{{ product.marca }}</h5>
-                                        <span class="rating"><svg width="24" height="24" class="text-primary">
-                                                <use xlink:href="#star-solid"></use>
-                                            </svg> 4.5</span>
-                                        <span class="price">${{ product.precio }}</span>
-                                        <div class="text-end mt-2">
-                                            <img src="{% static 'core/images/' %}{{ product.supermercado.nombre }}-logo.png" class="brand-logo" alt="{{ product.supermercado.nombre }} Logo">
-                                        </div>
+                    <div id="carousel-jumbo" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for products in jumbo_productos %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                                        {% for product in products %}
+                                            <div class="col">
+                                                <div class="product-item">
+                                                    {% if user.is_authenticated %}
+                                                        <a href="#" class="btn-wishlist toggle-favorite" data-product-id="{{ product.id }}">
+                                                            <svg width="24" height="24">
+                                                                <use xlink:href="#heart"></use>
+                                                            </svg>
+                                                        </a>
+                                                    {% endif %}
+                                                    <figure>
+                                                        <a href="{% url 'detail' product.id %}" title="{{ product.nombre }}">  
+                                                            <img src="{{ product.imagen_url.url }}" class="tab-image" alt="{{ product.nombre }}">
+                                                        </a>
+                                                    </figure>
+                                                    <h3>{{ product.nombre }}</h3>  
+                                                    <h5>{{ product.marca }}</h5>
+                                                    <span class="rating"><svg width="24" height="24" class="text-primary">
+                                                            <use xlink:href="#star-solid"></use>
+                                                        </svg> 4.5</span>
+                                                    <span class="price">${{ product.precio }}</span>
+                                                    <div class="text-end mt-2">
+                                                        <img src="{% static 'core/images/' %}{{ product.supermercado.nombre }}-logo.png" class="brand-logo" alt="{{ product.supermercado.nombre }} Logo">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
-                                {% endfor %}
-                            </div>
+                            {% endfor %}
                         </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-jumbo" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-jumbo" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
+                    <!---->
+
+                    <!-- Carrusel para Santa Isabel -->
                     <div class="tabs-header d-flex justify-content-between border-bottom my-5">
                         <h3>Santa Isabel</h3>
                     </div>
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
-                            <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-                                {% for product in productssanta_isabel %}
-                                <div class="col">
-                                    <div class="product-item">
-                                        {% if user.is_authenticated %}
-                                            <a href="#" class="btn-wishlist toggle-favorite" data-product-id="{{ product.id }}">
-                                                <svg width="24" height="24">
-                                                    <use xlink:href="#heart"></use>
-                                                </svg>
-                                            </a>
-                                        {% endif %}
-                                        <figure>
-                                            <a href="{% url 'detail' product.id %}" title="{{ product.nombre }}">  
-                                                <img src="{{ product.imagen_url.url }}" class="tab-image" alt="{{ product.nombre }}">
-                                            </a>
-                                        </figure>
-                                        <h3>{{ product.nombre }}</h3>  
-                                        <h5>{{ product.marca }}</h5>
-                                        <span class="rating"><svg width="24" height="24" class="text-primary">
-                                                <use xlink:href="#star-solid"></use>
-                                            </svg> 4.5</span>
-                                        <span class="price">${{ product.precio }}</span>
-                                        <div class="text-end mt-2">
-                                            <img src="{% static 'core/images/' %}{{ product.supermercado.nombre }}-logo.png" class="brand-logo" alt="{{ product.supermercado.nombre }} Logo">
-                                        </div>
+                    <div id="carousel-santa-isabel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for products in santa_isabel_productos %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                                        {% for product in products %}
+                                            <div class="col">
+                                                <div class="product-item">
+                                                    {% if user.is_authenticated %}
+                                                        <a href="#" class="btn-wishlist toggle-favorite" data-product-id="{{ product.id }}">
+                                                            <svg width="24" height="24">
+                                                                <use xlink:href="#heart"></use>
+                                                            </svg>
+                                                        </a>
+                                                    {% endif %}
+                                                    <figure>
+                                                        <a href="{% url 'detail' product.id %}" title="{{ product.nombre }}">  
+                                                            <img src="{{ product.imagen_url.url }}" class="tab-image" alt="{{ product.nombre }}">
+                                                        </a>
+                                                    </figure>
+                                                    <h3>{{ product.nombre }}</h3>  
+                                                    <h5>{{ product.marca }}</h5>
+                                                    <span class="rating"><svg width="24" height="24" class="text-primary">
+                                                            <use xlink:href="#star-solid"></use>
+                                                        </svg> 4.5</span>
+                                                    <span class="price">${{ product.precio }}</span>
+                                                    <div class="text-end mt-2">
+                                                        <img src="{% static 'core/images/' %}{{ product.supermercado.nombre }}-logo.png" class="brand-logo" alt="{{ product.supermercado.nombre }} Logo">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
-                                {% endfor %}
-                            </div>
+                            {% endfor %}
                         </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-santa-isabel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-santa-isabel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
+                    <!---->
                 </div>
             </div>
         </div>
     </div>
 </section>
+<!---->
 
 {% endblock %}
 
