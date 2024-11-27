@@ -15,4 +15,7 @@ urlpatterns = [
     path('update/<id>/', updateProduct, name='update'),
     path('delete/<id>/', deleteProduct, name='delete'),
     path('favoritos/', showFavorite, name='favoritos'),
+    path('favoritos/add/<int:product_id>/', add_favorite, name='add_favorite'),
+    path('favoritos/remove/<int:product_id>/', remove_favorite, name='remove_favorite'),
+    path('perfil/', editar_perfil, name='perfil'),
 ]

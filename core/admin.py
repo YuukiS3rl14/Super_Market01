@@ -34,8 +34,8 @@ class ComentarioAdmin(admin.ModelAdmin):
     list_per_page = 10
 
 class FavoritoAdmin(admin.ModelAdmin):
-    list_display = ['usuario', 'producto']
-    search_fields = ['usuario', 'producto']
+    list_display = ['id','usuario', 'producto']
+    search_fields = ['id','usuario', 'producto']
     list_per_page = 10
 
 admin.site.register(Region, RegionAdmin)

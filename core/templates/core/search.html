@@ -25,7 +25,7 @@
                                                 </svg></a>
                                             <figure>
                                                 <a href="{% url 'detail' product.id %}" title="{{ product.nombre }}">
-                                                    <img src="{{ product.imagen_url.url }}" class="tab-image" alt="{{ product.nombre }}">
+                                                    <img src="{{ product.imagen.url }}" class="tab-image" alt="{{ product.nombre }}">
                                                     </a>
                                             </figure>
                                             <h3>{{ product.nombre }}</h3>

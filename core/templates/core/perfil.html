@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load bootstrap5 %}
+
+{% block title %} Perfil {% endblock %}
+
+{% block principal %}
+    <div class="formulario">
+        <h2>Perfil</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <div class="d-flex align-items-center justify-content-center">
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

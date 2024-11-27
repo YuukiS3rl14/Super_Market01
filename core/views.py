@@ -4,7 +4,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import Http404
+from django.views.decorators.http import require_POST, require_http_methods
+from django.http import Http404, JsonResponse
 
 from .models import *
 from .forms import *
@@ -13,15 +14,23 @@ from .forms import *
 
 def showIndex(request):
     listproducts5 = Producto.objects.order_by('-fecha_actualizacion')[:5]
-    listproductslider = Producto.objects.filter(supermercado__nombre='Lider').order_by('precio')[:10]
-    listproductsjumbo = Producto.objects.filter(supermercado__nombre='Jumbo').order_by('precio')[:10]
-    listproductssanta_isabel = Producto.objects.filter(supermercado__nombre='Santa Isabel').order_by('precio')[:10]
-    
+    productslider = Producto.objects.filter(supermercado__nombre='Lider')
+    productsjumbo = Producto.objects.filter(supermercado__nombre='Jumbo')
+    productssanta_isabel = Producto.objects.filter(supermercado__nombre='Santa Isabel')
+
+    lider_productos = [productslider[i:i + 5] for i in range(0, len(productslider), 5)]
+    jumbo_productos = [productsjumbo[i:i + 5] for i in range(0, len(productsjumbo), 5)]
+    santa_isabel_productos = [productssanta_isabel[i:i + 5] for i in range(0, len(productssanta_isabel), 5)]
+
+    # Obtener los favoritos del usuario actual solo si está autenticado
+    favoritos_ids = Favorito.objects.filter(usuario=request.user).values_list('producto_id', flat=True) if request.user.is_authenticated else []
+
     datos = {
         'products5': listproducts5,
-        'productslider': listproductslider,
-        'productsjumbo': listproductsjumbo,
-        'productssanta_isabel': listproductssanta_isabel,
+        'lider_productos': lider_productos,
+        'jumbo_productos': jumbo_productos,
+        'santa_isabel_productos': santa_isabel_productos,
+        'favoritos_ids': favoritos_ids,  # Lista de IDs de favoritos
         'mostrar_filtros': True
     }
     
@@ -43,6 +52,19 @@ def showRegistro(request):
         data["form"] = form
 
     return render(request, 'registration/registro.html', data)
+
+@login_required
+def editar_perfil(request):
+    user = request.user
+    if request.method == 'POST':
+        form = RegistroForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('perfil') 
+    else:
+        form = RegistroForm(instance=user)
+    
+    return render(request, 'core/perfil.html', {'form': form})
 
 def showSearch(request):
     query = request.GET.get('query', '') 
@@ -79,12 +101,43 @@ def showSearch(request):
 
 @login_required
 def showFavorite(request):
-    listproducts5 = Producto.objects.order_by('-fecha_actualizacion')[:5]
+    user_id = request.user.id
+    
+    favoritos = Favorito.objects.filter(usuario_id=user_id).select_related('producto')
+    
+    productos_favoritos = []
+    for favorito in favoritos:
+        producto = favorito.producto  
+        productos_favoritos.append({
+            'id': producto.id,
+            'nombre': producto.nombre,
+            'marca': producto.marca,
+            'precio': producto.precio,
+            'descripcion': producto.descripcion,
+            'origen_url': producto.origen,
+            'fecha_actualizacion': producto.fecha_actualizacion,
+            'supermercado_nombre': producto.supermercado.nombre,
+            'imagen': producto.imagen,
+        })
 
     datos = {
-        'products5': listproducts5}
+        'productos_favoritos': productos_favoritos
+    }
 
     return render(request, 'core/favoritos.html', datos)
+
+@login_required
+@require_POST
+def add_favorite(request, product_id):
+    producto = Producto.objects.get(id=product_id)
+    favorito, created = Favorito.objects.get_or_create(usuario=request.user, producto=producto)
+    return JsonResponse({'status': 'added' if created else 'exists'})
+
+@login_required
+@require_http_methods(["DELETE"])
+def remove_favorite(request, product_id):
+    Favorito.objects.filter(usuario=request.user, producto_id=product_id).delete()
+    return JsonResponse({'status': 'removed'})
 
 def showDetail(request, id):
     producto = get_object_or_404(Producto, id=id)

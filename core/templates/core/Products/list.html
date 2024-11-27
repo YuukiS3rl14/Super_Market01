@@ -60,8 +60,8 @@
                                 <td>{{ aux.marca }}</td>
                                 <td>{{ aux.precio }}</td>
                                 <td>{{ aux.descripcion }}</td>
-                                <td>{{ aux.origen_url }}</td>
-                                <td><img src="{{ aux.imagen_url.url }}" alt="{{ aux.nombre }}" class="img-fluid" style="max-width: 100px;"></td>
+                                <td>{{ aux.origen }}</td>
+                                <td><img src="{{ aux.imagen.url }}" alt="{{ aux.nombre }}" class="img-fluid" style="max-width: 100px;"></td>
                                 <td>{{ aux.fecha_actualizacion }}</td>
                                 <td>
                                     {% if perms.core.change_producto and perms.core.delete_producto %}

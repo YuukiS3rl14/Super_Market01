@@ -12,37 +12,42 @@
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
             <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-                {% for product in products5 %}
-                <div class="col">
-                    <div class="product-item">
-                        {% if user.is_authenticated %}
-                            <a href="#" class="btn-wishlist toggle-favorite" data-product-id="{{ product.id }}">
-                                <svg width="24" height="24">
-                                    <use xlink:href="#heart"></use>
-                                </svg>
-                            </a>
-                        {% endif %}
-                        <figure>
-                            <a href="{% url 'detail' product.id %}" title="{{ product.nombre }}">  
-                                <img src="{{ product.imagen_url.url }}" class="tab-image" alt="{{ product.nombre }}">
-                            </a>
-                        </figure>
-                        <h3>{{ product.nombre }}</h3>  
-                        <h5>{{ product.marca }}</h5>
-                        <span class="rating"><svg width="24" height="24" class="text-primary">
-                                <use xlink:href="#star-solid"></use>
-                            </svg> 4.5</span>
-                        <span class="price">${{ product.precio }}</span>
-                        <div class="text-end mt-2">
-                            <img src="{% static 'core/images/' %}{{ product.supermercado.nombre }}-logo.png" class="brand-logo" alt="{{ product.supermercado.nombre }} Logo">
+                {% if productos_favoritos %}
+                    {% for producto in productos_favoritos %}
+                    <div class="col">
+                        <div class="product-item">
+                            {% if user.is_authenticated %}
+                                <a href="#" class="btn-wishlist toggle-favorite" data-product-id="{{ producto.id }}">
+                                    <svg width="24" height="24">
+                                        <use xlink:href="#heart"></use>
+                                    </svg>
+                                </a>
+                            {% endif %}
+                            <figure>
+                                <a href="{% url 'detail' producto.id %}" title="{{ producto.nombre }}">
+                                    <img src="{{ producto.imagen.url }}" class="tab-image" alt="{{ producto.nombre }}">
+                                </a>
+                            </figure>
+                            <h3>{{ producto.nombre }}</h3>
+                            <h5>{{ producto.marca }}</h5>
+                            <span class="rating"><svg width="24" height="24" class="text-primary">
+                                    <use xlink:href="#star-solid"></use>
+                                </svg> 4.5</span>
+                            <span class="price">${{ producto.precio }}</span>
+                            <div class="text-end mt-2">
+                                <img src="{% static 'core/images/' %}{{ producto.supermercado_nombre }}-logo.png" class="brand-logo" alt="{{ producto.supermercado_nombre }} Logo">
+                            </div>
                         </div>
                     </div>
-                </div>
-                {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <div class="col">
+                        <p>No tienes productos favoritos.</p>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
 
 {% endblock %}
-

@@ -1,61 +1,37 @@
-/*
-document.addEventListener('DOMContentLoaded', function() {
-    const favoriteButtons = document.querySelectorAll('.toggle-favorite');
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleFavoriteButtons = document.querySelectorAll('.toggle-favorite');
 
-    favoriteButtons.forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault();
+    // Obtener el token CSRF desde la meta etiqueta
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+    toggleFavoriteButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
             const productId = this.getAttribute('data-product-id');
+            const isFavorito = this.getAttribute('data-favorito') === 'true';
 
-            fetch("{% url 'toggle_favorito' %}", { 
-                method: 'POST',
+            fetch(`/favoritos/${isFavorito ? 'remove' : 'add'}/${productId}/`, {
+                method: isFavorito ? 'DELETE' : 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}' 
-                },
-                body: JSON.stringify({ 'producto_id': productId })
-            })
-            .then(response => {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
                 if (response.ok) {
-                    return response.json();
-                } else if (response.status === 401) {
-                    window.location.href = "{% url 'login' %}";
+                    // Actualiza el estado del botón
+                    const heartIcon = this.querySelector('use');
+                    if (isFavorito) {
+                        heartIcon.setAttribute('xlink:href', '#heart');  // Corazón vacío
+                        this.setAttribute('data-favorito', 'false');
+                    } else {
+                        heartIcon.setAttribute('xlink:href', '#heart-filled');  // Corazón lleno
+                        this.setAttribute('data-favorito', 'true');
+                    }
                 } else {
-                    throw new Error('Network response was not ok.');
+                    console.error('Error al actualizar el favorito:', response.statusText);
                 }
-            })
-            .then(data => {
-                if (data.status === 'added') {
-                    this.querySelector('svg').classList.add('marked');
-                    this.querySelector('svg').classList.remove('normal');
-                } else if (data.status === 'deleted') {
-                    this.querySelector('svg').classList.remove('marked');
-                    this.querySelector('svg').classList.add('normal');
-                }
-            })
-            .catch(error => console.error('Error:', error));
+            }).catch(error => console.error('Error:', error));
         });
     });
 });
-*/
 
-/*
-$(document).ready(function() {
-    $('#submitComment').click(function() {
-        const formData = $('#commentForm').serialize();
-        const productoId = {{ producto.id }}; 
-
-        $.post("{% url 'detail' producto.id %}", formData + '&csrfmiddlewaretoken={{ csrf_token }}')
-        .done(function(response) {
-            if (response.status === 'success') {
-                alert('Comentario añadido con éxito!');
-                $('#commentOffcanvas').collapse('hide');
-            }
-        })
-        .fail(function() {
-            alert('Error al añadir el comentario. Por favor intenta de nuevo.');
-        });
-    });
-});
-*/

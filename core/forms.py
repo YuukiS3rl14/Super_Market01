@@ -16,7 +16,7 @@ class ProductoForm(ModelForm):
 
     class Meta:
         model = Producto
-        fields = ['supermercado','nombre','marca','precio','descripcion','origen_url','imagen_url','fecha_actualizacion']
+        fields = ['supermercado','nombre','marca','precio','descripcion','origen','imagen']
 
 class RegistroForm(UserCreationForm):
 

@@ -30,9 +30,9 @@ class Producto(models.Model):
     marca = models.CharField(max_length=50)
     precio = models.IntegerField() 
     descripcion = models.CharField(max_length=300)
-    imagen_url = models.ImageField()
-    origen_url = models.CharField(max_length=300)
-    fecha_actualizacion = models.DateField()
+    imagen = models.ImageField(upload_to='productos/')
+    origen = models.URLField()  
+    fecha_actualizacion = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.nombre 
@@ -45,7 +45,7 @@ class Rol(models.Model):
 
 class Comentario(models.Model):
     titulo = models.CharField(max_length=50)
-    texto = models.CharField(max_length=50)
+    texto = models.CharField(max_length=300)
     calificacion = models.IntegerField() 
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
