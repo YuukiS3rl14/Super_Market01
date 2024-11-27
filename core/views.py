@@ -17,20 +17,30 @@ def showIndex(request):
     productslider = Producto.objects.filter(supermercado__nombre='Lider')
     productsjumbo = Producto.objects.filter(supermercado__nombre='Jumbo')
     productssanta_isabel = Producto.objects.filter(supermercado__nombre='Santa Isabel')
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/main
     lider_productos = [productslider[i:i + 5] for i in range(0, len(productslider), 5)]
     jumbo_productos = [productsjumbo[i:i + 5] for i in range(0, len(productsjumbo), 5)]
     santa_isabel_productos = [productssanta_isabel[i:i + 5] for i in range(0, len(productssanta_isabel), 5)]
 
+<<<<<<< HEAD
     # Obtener los favoritos del usuario actual solo si está autenticado
     favoritos_ids = Favorito.objects.filter(usuario=request.user).values_list('producto_id', flat=True) if request.user.is_authenticated else []
 
+=======
+>>>>>>> origin/main
     datos = {
         'products5': listproducts5,
         'lider_productos': lider_productos,
         'jumbo_productos': jumbo_productos,
         'santa_isabel_productos': santa_isabel_productos,
+<<<<<<< HEAD
         'favoritos_ids': favoritos_ids,  # Lista de IDs de favoritos
+=======
+>>>>>>> origin/main
         'mostrar_filtros': True
     }
     
